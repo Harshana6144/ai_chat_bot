@@ -15,45 +15,44 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
             //Top section : chat messages
             Expanded(
-              child:Consumer<ChatProvider>(
-              builder: (context,chatProvider,child){
-                //empty
-               if (chatProvider.message.isEmpty) {
-                      return const Center(
+              child: Consumer<ChatProvider>(
+                builder: (context, chatProvider, child) {
+                  //empty
+                  if (chatProvider.message.isEmpty) {
+                    return const Center(
                       child: Text("Start a conversation..."),
                     );
-                 }
-        
-                 //chat messages
-                 return ListView.builder(
-                  itemCount: chatProvider.messages.length,
-                  itemBuilder: (context,index){
-                    //get each message
-                    final message = chatProvider.messages[index];
-        
-                    //return message
-                    return Text(message.content);
-                  },
-                 );
-               },
+                  }
+
+                  //chat messages
+                  return ListView.builder(
+                    itemCount: chatProvider.messages.length,
+                    itemBuilder: (context, index) {
+                      //get each message
+                      final message = chatProvider.messages[index];
+
+                      //return message
+                      return Text(message.content);
+                    },
+                  );
+                },
               ),
             ),
-              
-        
+
             //user input boxes
             Row(
               children: [
                 //LEFT -> Text box
-                Expanded(child: TextField()),
+                const Expanded(child: TextField()),
 
                 //RIGHT -> send button
                 IconButton(
-                  onPressed: () {}, 
+                  onPressed: () {},
                   icon: const Icon(Icons.send),
                 ),
               ],
