@@ -1,9 +1,8 @@
 import 'package:ai_chat_bot/chat/data/claude_api_service.dart';
 import 'package:ai_chat_bot/chat/model/message.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
-class ChatProvider with ChangeNotifier{
+class ChatProvider with ChangeNotifier {
   //Claude api service
   final _apiService = ClaudeApiService(apiKey: "YOUR_API_KEY");
 
@@ -18,16 +17,16 @@ class ChatProvider with ChangeNotifier{
   get messages => null;
 
   // Send message
-  Future<void> sendMessage(String content) async{
+  Future<void> sendMessage(String content) async {
     //prevent empty sends
-    if(content.trim().isEmpty) return;
+    if (content.trim().isEmpty) return;
 
     //user message
     final userMessage = Message(
       content: content,
-      isUser:true,
-      timestamp:DateTime.now(),
-      );
+      isUser: true,
+      timestamp: DateTime.now(),
+    );
 
     //add user message to chat
     _message.add(userMessage);
@@ -40,13 +39,13 @@ class ChatProvider with ChangeNotifier{
 
     //update UI
     notifyListeners();
-    
+
     //send message & receive response
-    try{
+    try {
       final response = await _apiService.sendMessage(content);
 
       //response message from AI
-      final responseMessage =  Message(
+      final responseMessage = Message(
         content: content,
         isUser: false,
         timestamp: DateTime.now(),
@@ -65,7 +64,6 @@ class ChatProvider with ChangeNotifier{
         timestamp: DateTime.now(),
       );
 
-
       //add message to chat
       _message.add(errorMessage);
 
@@ -74,9 +72,6 @@ class ChatProvider with ChangeNotifier{
 
       //updated UI
       notifyListeners();
-
-
     }
-
   }
 }
