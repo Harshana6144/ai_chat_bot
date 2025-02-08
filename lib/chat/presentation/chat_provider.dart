@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 
 class ChatProvider with ChangeNotifier {
   //Claude api service
-  final _apiService = ClaudeApiService(apiKey: "YOUR_API_KEY");
+  final _apiService = ClaudeApiService(
+      apiKey:
+          "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");
 
   //mesage & Loading..
-  final List<Message> _message = [];
+  final List<Message> _messages = [];
   bool _isLoading = false;
 
   //Getters
-  List<Message> get message => _message;
+  List<Message> get messages => _messages;
   bool get isLoading => _isLoading;
-
-  get messages => null;
 
   // Send message
   Future<void> sendMessage(String content) async {
@@ -29,7 +29,7 @@ class ChatProvider with ChangeNotifier {
     );
 
     //add user message to chat
-    _message.add(userMessage);
+    _messages.add(userMessage);
 
     //update UI
     notifyListeners();
@@ -46,13 +46,13 @@ class ChatProvider with ChangeNotifier {
 
       //response message from AI
       final responseMessage = Message(
-        content: content,
+        content: response,
         isUser: false,
         timestamp: DateTime.now(),
       );
 
       //add to chat
-      _message.add(responseMessage);
+      _messages.add(responseMessage);
     }
 
     //erroe
@@ -65,7 +65,7 @@ class ChatProvider with ChangeNotifier {
       );
 
       //add message to chat
-      _message.add(errorMessage);
+      _messages.add(errorMessage);
 
       //finished loading
       _isLoading = false;
