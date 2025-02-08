@@ -23,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
               child: Consumer<ChatProvider>(
                 builder: (context, chatProvider, child) {
                   //empty
-                  if (chatProvider.message.isEmpty) {
+                  if (chatProvider.messages.isEmpty) {
                     return const Center(
                       child: Text("Start a conversation..."),
                     );
@@ -52,7 +52,13 @@ class _ChatPageState extends State<ChatPage> {
 
                 //RIGHT -> send button
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_controller.text.isNotEmpty) {
+                      final chatProvider = context.read<ChatProvider>();
+                      chatProvider.sendMessage(_controller.text);
+                      _controller.clear();
+                    }
+                  },
                   icon: const Icon(Icons.send),
                 ),
               ],
