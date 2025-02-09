@@ -6,7 +6,7 @@ class ChatProvider with ChangeNotifier {
   //Claude api service
   final _apiService = ClaudeApiService(
       apiKey:
-          "");
+          "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");
 
   //mesage & Loading..
   final List<Message> _messages = [];
@@ -55,7 +55,7 @@ class ChatProvider with ChangeNotifier {
       _messages.add(responseMessage);
     }
 
-    //erroe
+    //error
     catch (e) {
       //error message
       final errorMessage = Message(
