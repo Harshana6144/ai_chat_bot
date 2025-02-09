@@ -7,7 +7,7 @@ Service class to handle all Clude API stuff
 
 */
 
-class ClaudeApiService{
+class ClaudeApiService {
   //API Constants
   static const String _baseUrl = 'https://api.anthropic.com/v1/messages';
   static const String _apiVersion = '2023-06-01';
@@ -24,47 +24,45 @@ class ClaudeApiService{
   Send a message to Claude API & return the response
 
   */
-Future<String> sendMessage(String content) async {
-  try{
-    //Make POST request to Claude API
-    final response = await http.post(
-    Uri.parse(_baseUrl),
-    headers:_getHeaders(),
-    body: _getRequestBody(content),
-    );
+  Future<String> sendMessage(String content) async {
+    try {
+      //Make POST request to Claude API
+      final response = await http.post(
+        Uri.parse(_baseUrl),
+        headers: _getHeaders(),
+        body: _getRequestBody(content),
+      );
 
+      //check request was succsffful
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body); // parse json respons
+        return data['content'][0]['text']; // extract claude's response text
+      }
 
-  //check request was succsffful
-  if(response.statusCode ==200){
-    final data = jsonDecode(response.body); // parse json respons
-    return data['content'][0]['text']; // extract claude's response text
-  }
-
-  //Handle unsuccessful response
-  else{
-    throw Exception('Faild to get response from : ${response.statusCode}');
-  }
-    }catch (e) {
+      //Handle unsuccessful response
+      else {
+        throw Exception('Faild to get response from : ${response.statusCode}');
+      }
+    } catch (e) {
       //handel any errors during
       throw Exception('API Error $e');
     }
   }
 
 //create required headers for claude API
-    Map<String,String>_getHeaders () =>{
-      'Content-Type':'application/json',
-      'x-api-key': _apiKey,
-      'anthropic-version': _apiVersion,
-    };
+  Map<String, String> _getHeaders() => {
+        'Content-Type': 'application/json',
+        'x-api-key': _apiKey,
+        'anthropic-version': _apiVersion,
+      };
 
   //format request body according to Claude API specs
   String _getRequestBody(String content) => jsonEncode({
-    'model' : _model,
-    'messages': [
-      //format message in Claude's required structure
-      {'role':'user','content': content}
-    ],
-    'max_tokens' : _maxTokens,
-  });
-
+        'model': _model,
+        'messages': [
+          //format message in Claude's required structure
+          {'role': 'user', 'content': content}
+        ],
+        'max_tokens': _maxTokens,
+      });
 }

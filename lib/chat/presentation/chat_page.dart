@@ -1,3 +1,4 @@
+import 'package:ai_chat_bot/chat/presentation/chat_bubble.dart';
 import 'package:ai_chat_bot/chat/presentation/chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,18 +38,30 @@ class _ChatPageState extends State<ChatPage> {
                       final message = chatProvider.messages[index];
 
                       //return message
-                      return Text(message.content);
+                      return ChatBubble(message: message);
                     },
                   );
                 },
               ),
             ),
 
+            //loading indicater
+            Consumer<ChatProvider>(
+              builder: (context, chatProvider, child) {
+                if (chatProvider.isLoading) {
+                  return const CircularProgressIndicator();
+                }
+                return const SizedBox();
+              },
+            ),
+
             //user input boxes
             Row(
               children: [
                 //LEFT -> Text box
-                const Expanded(child: TextField()),
+                Expanded(
+                  child: TextField(controller: _controller),
+                ),
 
                 //RIGHT -> send button
                 IconButton(
